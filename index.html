@@ -3,14 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A service for those who love being here but appearing there — travel the world without packing a suitcase!">
+    <meta name="description" content="Инструкция по настройке">
     <meta name="theme-color" content="#fff">
-    <title>Flexify</title>
-    <link href="https://raw.githubusercontent.com/dermv/marzbanify-template/refs/heads/main/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
-    <link href="https://raw.githubusercontent.com/dermv/marzbanify-template/refs/heads/main/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
-    <link href="https://raw.githubusercontent.com/dermv/marzbanify-template/refs/heads/main/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <title>VPN для {{ user.username.split('_')[-1] }}</title>
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH">
     <style>
+      .my-align-items-center {
+  display: flex; /* flexbox нужен для работы align-items */
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
       .bi {
         width: 1em;
         height: 1em;
@@ -212,10 +218,11 @@
     </svg>
     <div class="container my-container py-3" x-data>
       <header class="d-flex flex-wrap align-items-center gap-2 mb-5">
-        <img src="https://raw.githubusercontent.com/dermv/marzbanify-template/refs/heads/main/img/logo.png" class="me-auto" alt="Logo" width="32" height="32">
-        <ul class="nav align-items-center">
+        <!-- <img src="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-32x32.png" class="me-auto" alt="Logo" width="32" height="32"> -->
+        <!-- <ul class="nav align-items-center"> -->
+          <ul class="nav my-align-items-center">
           <li class="nav-item">
-            <a class="nav-link my-nav-link fw-semibold px-2" href="https://t.me/" rel="noopener noreferrer" target="_blank" x-text="$t('support')"></a>
+            <a class="nav-link my-nav-link fw-semibold px-2" href="https://t.me/help_orkhv" rel="noopener noreferrer" target="_blank" x-text="$t('support')"></a>
           </li>
           <li class="nav-item">
             <div class="dropdown">
@@ -271,7 +278,9 @@
         </ul>
       </header>
       <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-        <span class="fs-3 fw-bold me-auto" x-text="$t('subscription')"></span>
+        <!-- <span class="fs-3 fw-bold me-auto" x-text="$t('subscription')"></span> -->
+        <!-- <span class="fs-3 fw-bold me-auto" >VPN для {{ user.username }}</span> -->
+        <span class="fs-3 fw-bold me-auto">VPN для {{ user.username.split('_')[-1] }}</span>
         <button class="btn my-btn" id="btn-copy-link" type="button" x-text="$t('copyLink')"></button>
         <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
           <div class="toast my-toast" id="toast-copy-link" role="alert" aria-atomic="true" aria-live="assertive">
@@ -293,6 +302,7 @@
             <svg class="bi my-color-red fs-4 mb-2"><use href="#emoji-frown-fill"></use></svg>
             {% endif %}
             <span class="fs-5 fw-bold" x-text="$t('status')"></span>
+            <!-- <span class="fs-5 fw-bold" >{{ user.username }}</span> -->
             {% if user.status.value == 'active' %}
             <span class="fw-semibold" x-text="$t('active')"></span>
             {% elif user.status.value == 'limited' %}
@@ -317,36 +327,6 @@
               <span x-text="$t('until')"></span>
               {{ '.'.join(date) }}
             </span>
-            {% endif %}
-          </div>
-        </div>
-        <div class="col">
-          <div class="my-block d-flex flex-column h-100">
-            <svg class="bi my-color-blue fs-4 mb-2"><use href="#arrow-down-up"></use></svg>
-            <span class="fs-5 fw-bold" x-text="$t('traffic')"></span>
-            <span class="fw-semibold">
-              {{ user.used_traffic | bytesformat }}
-              <span x-text="$t('of')"></span>
-              {% if not user.data_limit %}∞{% else %}
-              {{ user.data_limit | bytesformat }}
-              {% endif %}
-            </span>
-          </div>
-        </div>
-        <div class="col">
-          <div class="my-block d-flex flex-column h-100">
-            <svg class="bi my-color-yellow fs-4 mb-2"><use href="#repeat"></use></svg>
-            <span class="fs-5 fw-bold" x-text="$t('trafficReset')"></span>
-            {% if user.data_limit_reset_strategy == 'no_reset' %}
-            <span class="fw-semibold" x-text="$t('no')"></span>
-            {% elif user.data_limit_reset_strategy == 'day' %}
-            <span class="fw-semibold" x-text="$t('daily')"></span>
-            {% elif user.data_limit_reset_strategy == 'week' %}
-            <span class="fw-semibold" x-text="$t('weekly')"></span>
-            {% elif user.data_limit_reset_strategy == 'month' %}
-            <span class="fw-semibold" x-text="$t('monthly')"></span>
-            {% elif user.data_limit_reset_strategy == 'year' %}
-            <span class="fw-semibold" x-text="$t('yearly')"></span>
             {% endif %}
           </div>
         </div>
@@ -380,6 +360,20 @@
                 <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
               </button>
             </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-macm" data-bs-toggle="tab" role="tab" aria-controls="tab-macm" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#apple"></use></svg>
+                <span class="me-2">MacOS</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-macintel" data-bs-toggle="tab" role="tab" aria-controls="tab-macintel" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#apple"></use></svg>
+                <span class="me-2">MacOS intel</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -391,7 +385,7 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.pc.first.title')"></h4>
                 <p class="fw-semibold" x-text="$t('guideContent.pc.first.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://github.com/hiddify/hiddify-next/releases/latest" rel="noopener noreferrer" target="_blank">
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Windows-Setup-x64.Msix" rel="noopener noreferrer" target="_blank">
                   <span class="fw-semibold" x-text="$t('openPage')"></span>
                   <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
                 </a>
@@ -424,7 +418,7 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.android.first.title')"></h4>
                 <p class="fw-semibold" x-text="$t('guideContent.android.first.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://play.google.com/store/apps/details?id=app.hiddify.com" rel="noopener noreferrer" target="_blank">
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://play.google.com/store/apps/details?id=com.v2ray.ang" rel="noopener noreferrer" target="_blank">
                   <span class="fw-semibold" x-text="$t('openPage')"></span>
                   <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
                 </a>
@@ -435,7 +429,7 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.android.second.title')"></h4>
                 <p class="fw-semibold" x-text="$t('guideContent.android.second.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="hiddify://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="v2rayng://install-config?url={{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
                   <span class="fw-semibold" x-text="$t('addSubscription')"></span>
                   <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
                 </a>
@@ -457,7 +451,7 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.ios.first.title')"></h4>
                 <p class="fw-semibold" x-text="$t('guideContent.ios.first.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/app/hiddify-proxy-vpn/id6596777532" rel="noopener noreferrer" target="_blank">
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
                   <span class="fw-semibold" x-text="$t('openPage')"></span>
                   <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
                 </a>
@@ -468,7 +462,7 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.ios.second.title')"></h4>
                 <p class="fw-semibold" x-text="$t('guideContent.ios.second.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="hiddify://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
                   <span class="fw-semibold" x-text="$t('addSubscription')"></span>
                   <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
                 </a>
@@ -479,6 +473,72 @@
                 <span class="my-step-icon"></span>
                 <h4 class="fw-bold" x-text="$t('guideContent.ios.third.title')"></h4>
                 <span class="fw-semibold" x-text="$t('guideContent.ios.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-macm" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macm.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macm.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.macm.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-macintel" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macintel.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/v2box-v2ray-client/id6446814690" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macintel.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="v2box://install-sub?url={{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.macintel.third.subtitle')"></span>
               </div>
             </div>
           </div>
@@ -515,7 +575,6 @@
           subscription: 'Subscription',
           copyLink: 'Copy link',
           copiedToClipboard: 'Copied to clipboard',
-          guide: 'Guide',
           pc: 'PC',
           openPage: 'Open page',
           addSubscription: 'Add subscription',
@@ -612,73 +671,102 @@
           copyLink: 'Скопировать ссылку',
           copiedToClipboard: 'Скопировано в буфер обмена',
           guide: 'Инструкция',
+          guidemy: {
+            android: {
+              content: 'Инструкция для Android',
+            },
+            ios: {
+              content: 'Инструкция для iOS',
+            },
+            macm: {
+              content: 'Инструкция для MacOS на M',
+            },
+            macintel: {
+              content: 'Инструкция для MacOS на M',
+            },
+            pc: {
+              content: 'Инструкция для PC',
+            },
+    },
           pc: 'ПК',
           openPage: 'Открыть страницу',
-          addSubscription: 'Добавить подписку',
+          addSubscription: 'Добавить VPN',
           guideContent: {
             pc: {
               first: {
-                title: 'Установи и открой Hiddify',
-                subtitle: `Перейди на страницу последнего релиза на GitHub. Скачай
-                файл для своей ОС и установи приложение. Запусти его, выбери регион
-                «Россия» (в стартовом окне или в настройках), затем нажми «Старт».`,
+                title: 'Установите и откройте Hiddify',
+                subtitle: `Скачайте файл и установите приложение. Запустите его, выбери регион «Россия» (в стартовом окне или в настройках), затем нажми «Старт».`,
               },
               second: {
-                title: 'Добавь подписку',
-                subtitle: `Нажми кнопку ниже — приложение откроется, и подписка
-                добавится автоматически. Если этого не произошло, закрой приложение
-                и попробуй снова или добавь подписку вручную через «+» в правом
-                верхнем углу.`,
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, закройте приложение и попробуйте снова или скопируйте ссылку и добавьте вручную через «+» в правом верхнем углу.`,
               },
               third: {
-                title: 'Подключись и пользуйся',
-                subtitle: `На главной странице нажми большую кнопку включения в
-                центре для подключения к VPN. При необходимости выбери другой сервер
-                на странице прокси. Пользуйся :)`,
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице нажмите большую кнопку включения в центре для подключения к VPN. При необходимости выбери другой сервер на странице прокси. Пользуйтесь :)`,
               },
             },
             android: {
               first: {
-                title: 'Установи и открой Hiddify',
-                subtitle: `Открой страницу в Google Play и установи приложение.
-                Запусти его, выбери регион «Россия» (в стартовом окне или в
-                настройках), затем нажми «Старт».`,
+                title: 'Установите и откройте v2rayNG',
+                subtitle: `Перейдите в Google Play и скачайте приложение v2rayNG.`,
               },
               second: {
-                title: 'Добавь подписку',
-                subtitle: `Нажми кнопку ниже — приложение откроется, и подписка
-                добавится автоматически. Если этого не произошло, закрой приложение
-                и попробуй снова или добавь подписку вручную через «+» в правом
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN
+                добавится автоматически. Если этого не произошло, закройте приложение
+                и попробуйте снова или скопируйте ссылку и добавьте вручную через «+» в правом
                 верхнем углу.`,
               },
               third: {
-                title: 'Подключись и пользуйся',
-                subtitle: `На главной странице нажми большую кнопку включения в
-                центре для подключения к VPN. Если нужно, выбери другой сервер, нажав
-                на «>» внизу. Пользуйся :)`,
+                title: 'Обновите VPN',
+                subtitle: `В правом
+                верхнем углу нажмите на три точки. В появившемся меню нажмите «Обновить подписку группы». Пользуйся :)`,
               },
             },
             ios: {
               first: {
-                title: 'Установи и открой Hiddify',
-                subtitle: `Открой страницу в App Store и установи приложение. Запусти
-                приложение, в окне разрешения на добавление конфигураций VPN нажми
-                «Разрешить» и введи свой код-пароль. В стартовом окне (или в
-                настройках, если пропустил) выбери регион «Россия», а затем нажми
-                «Старт».`,
+                title: 'Установите Streisand',
+                subtitle: `Перейдите в AppStore и скачай приложение Streisand.`,
               },
               second: {
-                title: 'Добавь подписку',
-                subtitle: `Нажми на кнопку ниже и в появившемся окне нажми «Открыть»
-                — откроется приложение, и подписка добавится автоматически. Если это
-                не произошло, закрой приложение и попробуй снова, либо добавь
-                подписку вручную через кнопку «+» в правом верхнем углу.`,
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, попробуйте снова или скопируйте ссылку, и добавьте вручную через «+» в правом
+                верхнем углу.`,
               },
               third: {
-                title: 'Подключись и пользуйся',
-                subtitle: `На главной странице нажми большую кнопку включения в
-                центре для подключения к VPN. Если нужно, выбери другой сервер, нажав
-                на «>» внизу. Пользуйся :)`,
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице приложения Streisand нажмите большую синюю кнопку для подключения к VPN. Пользуйтесь :)`,
+              },
+            },
+            macm: {
+              first: {
+                title: 'Установите Streisand',
+                subtitle: `Перейдите в AppStore и скачайте приложение Streisand.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN
+                добавится автоматически. Если этого не произошло, попробуйте снова или скопируйте ссылку и добавьте вручную «+» в правом
+                верхнем углу.`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице приложения Streisand нажмите большую синюю кнопку для подключения к VPN. Пользуйтесь :)`,
+              },
+            },
+            macintel: {
+              first: {
+                title: 'Установите и откройте V2box',
+                subtitle: `Для MAC на процессорах Intel перейдите в AppStore, скачайте приложение V2box.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, скопируйте ссылку и добавьте вручную через «+» в правом верхнем углу. Нужно нажать на первую строчку "import"`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице нажмите большую кнопку включения в центре для подключения к VPN. При необходимости выбери другой сервер на странице прокси. Пользуйтесь :)`,
               },
             },
           },
@@ -686,15 +774,17 @@
       };
       
       function getPreferredGuideTab() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes('android')) {
-          return '#tab-android';
-        } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-          return '#tab-ios';
-        } else {
-          return '#tab-pc';
-        }
-      }
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes('android')) {
+        return '#tab-android';
+    } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+        return '#tab-ios';
+    } else if (userAgent.includes('macintosh')) {
+        return '#tab-macm';
+    } else {
+        return '#tab-pc';
+    }
+}
       
       function getPreferredLanguage() {
         return (
